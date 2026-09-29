@@ -1,0 +1,49 @@
+/* =========================================================
+   EP.3 · Cyst carousel — DESIGN TOKENS
+   แก้สี / ฟอนต์ / ขนาด ทั้งเซ็ตจากไฟล์นี้ไฟล์เดียว
+   ========================================================= */
+:root {
+  /* ---------- Palette ---------- */
+  --c-red:        #A8443A;   /* Muted Red */
+  --c-oat:        #EADFCB;   /* Oat */
+  --c-pumpkin:    #E07A2F;   /* Pumpkin */
+  --c-oat-light:  #F7F1E6;   /* Oat Light (พื้นอ่อน / การ์ด) */
+  --c-espresso:   #3A2A22;   /* ตัวอักษร / เส้นขอบ */
+
+  /* shades — เพิ่มมิติเล็กน้อย (flat เท่านั้น ไม่มี gradient) */
+  --c-red-deep:     #8E3830;
+  --c-oat-deep:     #D9C8AA;
+  --c-pumpkin-deep: #C4651F;
+  --c-choco:        #6B4432;   /* สี "ช็อกโกแลต" ของซีสต์ใน doodle */
+  --c-blue-heart:   #4F7BC0;   /* ใช้เฉพาะ 💙 ของแพร์ */
+
+  /* ---------- Type ---------- */
+  --f-thai:  "IBM Plex Sans Thai", sans-serif;
+  --f-serif: "DM Serif Display", serif;
+
+  /* 4:5 / 9:16 */
+  --fs-headline: 88px;   /* auto-fit: ลดทีละ 4px จนไม่เกิน 3 บรรทัด, ต่ำสุด 64px */
+  --fs-headline-min: 64px;
+  --fs-body: 40px;       /* ≥ 38px */
+  --fs-label: 38px;
+  --fs-pill: 28px;
+  --fs-small: 26px;      /* เล็กล่าง */
+  --fs-disclaimer: 23px; /* ≥ 22px */
+
+  /* 1:1 Facebook */
+  --fs-fb-headline: 92px;  /* ≥ 88px */
+  --fs-fb-headline-min: 88px;
+  --fs-fb-body: 50px;      /* ≥ 48px */
+  --fs-fb-small: 30px;     /* ≥ 30px */
+  --fs-fb-disclaimer: 26px;/* ≥ 26px */
+
+  --lh-head: 1.22;       /* เผื่อสระบน/วรรณยุกต์ภาษาไทย */
+  --lh-body: 1.45;
+
+  /* ---------- Shape ---------- */
+  --margin: 72px;
+  --radius: 32px;
+  --border: 4px;
+  --shadow: 10px;
+  --stroke: 4px;          /* เส้น illustration */
+}

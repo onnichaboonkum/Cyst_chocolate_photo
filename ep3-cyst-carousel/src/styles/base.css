@@ -1,0 +1,124 @@
+@import url("../../tokens.css");
+
+@font-face { font-family: "IBM Plex Sans Thai"; src: url("../../fonts/IBMPlexSansThai-Medium.ttf"); font-weight: 500; font-display: block; }
+@font-face { font-family: "IBM Plex Sans Thai"; src: url("../../fonts/IBMPlexSansThai-SemiBold.ttf"); font-weight: 600; font-display: block; }
+@font-face { font-family: "IBM Plex Sans Thai"; src: url("../../fonts/IBMPlexSansThai-Bold.ttf"); font-weight: 700; font-display: block; }
+@font-face { font-family: "DM Serif Display"; src: url("../../fonts/DMSerifDisplay-Regular.ttf"); font-weight: 400; font-display: block; }
+@font-face { font-family: "DM Serif Display"; src: url("../../fonts/DMSerifDisplay-Italic.ttf"); font-weight: 400; font-style: italic; font-display: block; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #1d1d1d; }
+body { display: grid; place-items: start center; }
+
+/* ---------- Canvas (prop ratio) ---------- */
+.canvas {
+  position: relative; overflow: hidden; width: 1080px;
+  font-family: var(--f-thai); font-weight: 500; color: var(--c-espresso);
+  -webkit-font-smoothing: antialiased; word-break: keep-all; line-break: strict;
+}
+.r-4x5  { height: 1350px; }
+.r-9x16 { height: 1920px; }
+.r-1x1  { height: 1080px; }
+
+.bg-red       { background: var(--c-red);       --ink: var(--c-oat-light); --ink-soft: var(--c-oat); }
+.bg-oat       { background: var(--c-oat);       --ink: var(--c-espresso);  --ink-soft: var(--c-espresso); }
+.bg-pumpkin   { background: var(--c-pumpkin);   --ink: var(--c-espresso);  --ink-soft: var(--c-espresso); }
+.bg-oat-light { background: var(--c-oat-light); --ink: var(--c-espresso);  --ink-soft: var(--c-espresso); }
+.canvas { color: var(--ink); }
+
+/* print grain */
+.canvas::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 90; opacity: .13; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Frame: the 1080×1350 content box ----------
+   4:5  → frame = canvas, padding 72
+   9:16 → frame วางที่ y 170 (ล่างสุด 1520 ≤ 1920-380), ขวาเว้น 150 (≥ 140 ปุ่ม TikTok)
+   1:1  → frame = กรอบกลาง 864×864 (ขอบ 108 = 10%)                                   */
+.frame {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1350px;
+  padding: var(--margin);
+  display: grid; grid-template-rows: 70px 1fr 63px; grid-template-columns: minmax(0, 1fr); row-gap: 13px;  /* main = y 155–1202 · footer 1215–1278 */
+}
+.r-9x16 .frame { top: 170px; padding-right: 150px; }
+.r-1x1 .frame  { left: 108px; top: 108px; width: 864px; height: 864px; padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 30px; }
+
+.hdr  { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 20; }
+.main { display: flex; flex-direction: column; justify-content: center; gap: 30px; position: relative; z-index: 10; min-height: 0; }
+.ftr  { display: flex; align-items: center; position: relative; z-index: 20; }
+
+.decor { position: absolute; z-index: 5; pointer-events: none; }
+.decor svg, .ico svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---------- Typography ---------- */
+.hl { font-weight: 700; font-size: var(--fs-headline); line-height: var(--lh-head); letter-spacing: -.005em; }
+.r-1x1 .hl { font-size: var(--fs-fb-headline); }
+.body  { font-size: var(--fs-body); line-height: var(--lh-body); font-weight: 500; }
+.r-1x1 .body { font-size: var(--fs-fb-body); line-height: 1.35; }
+.small { font-size: var(--fs-small); line-height: 1.4; font-weight: 500; }
+.disc  { font-size: var(--fs-disclaimer); line-height: 1.4; font-weight: 500; }
+.r-1x1 .small { font-size: var(--fs-fb-small); }
+.r-1x1 .disc  { font-size: var(--fs-fb-disclaimer); }
+.serif { font-family: var(--f-serif); font-weight: 400; }
+.seg { white-space: nowrap; }          /* ตัดบรรทัดได้เฉพาะที่ช่องว่าง/จุด | ที่กำหนด — ไม่ตัดกลางคำ */
+b, .em { font-weight: 700; }
+/* marker: แถบสีทึบ (hard stop, ไม่ใช่ gradient ไล่สี) คาดครึ่งล่างของตัวอักษร */
+.mk { color: inherit; padding: 0 .1em; margin: 0 -.05em;
+      background: linear-gradient(transparent 40%, var(--mk, var(--c-pumpkin)) 40%, var(--mk, var(--c-pumpkin)) 72%, transparent 72%);
+      -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.emoji { display: inline-block; width: .95em; vertical-align: -.12em; margin-left: .12em; }
+
+/* ---------- PillTag ---------- */
+.pill { display: inline-flex; align-items: center; gap: .45em; height: 60px; padding: 0 26px; border-radius: 999px;
+        font-size: var(--fs-pill); font-weight: 600; line-height: 1; white-space: nowrap;
+        border: var(--border) solid var(--c-espresso); background: var(--c-oat-light); color: var(--c-espresso); }
+.pill .num { font-family: var(--f-serif); font-weight: 400; font-size: 1.2em; }
+.pill .sl  { opacity: .55; }
+.pill--dark { background: var(--c-espresso); color: var(--c-oat-light); }
+
+/* masthead */
+.mast { font-family: var(--f-serif); font-size: 25px; line-height: 1.06; text-align: right; white-space: nowrap; color: var(--ink); }
+.mast i { font-style: italic; }
+.mast .rule { display: block; width: 60px; height: 3px; background: currentColor; margin: 4px 0 5px auto; }
+.r-1x1 .mast { position: absolute; top: 40px; right: 108px; font-size: 30px; }
+.r-1x1 .mast .rule { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin: 0 14px; vertical-align: middle; }
+
+/* ---------- RoundCard ---------- */
+.card { background: var(--c-oat-light); color: var(--c-espresso); border: var(--border) solid var(--c-espresso);
+        border-radius: var(--radius); box-shadow: var(--shadow) var(--shadow) 0 var(--c-espresso); padding: 26px 32px; position: relative; }
+.card--oat { background: var(--c-oat); }
+.card--pumpkin { background: var(--c-pumpkin); }
+
+/* ---------- Chip ---------- */
+.chip { display: flex; align-items: center; gap: 18px; background: var(--c-oat-light); color: var(--c-espresso);
+        border: var(--border) solid var(--c-espresso); border-radius: 24px; padding: 12px 18px; font-size: var(--fs-label); font-weight: 600; line-height: 1.25; }
+.chip .ico { flex: none; width: 76px; height: 76px; border-radius: 18px; background: var(--c-oat); display: grid; place-items: center; }
+.chip .ico svg { width: 58px; }
+
+/* ---------- BigNumber ---------- */
+.bignum { align-self: flex-start; font-family: var(--f-serif); font-weight: 400; line-height: .95; letter-spacing: -.02em; white-space: nowrap; font-variant-numeric: lining-nums; }
+.bignum .baht { font-family: var(--f-thai); font-weight: 700; font-size: .62em; margin-left: .06em; letter-spacing: 0; }
+
+/* ---------- Pumpkin block (ต้องมีขอบ Espresso เสมอเมื่ออยู่บน Muted Red) ---------- */
+.block { display: inline-block; align-self: flex-start; background: var(--c-pumpkin); color: var(--c-espresso);
+         border: var(--border) solid var(--c-espresso); border-radius: 22px; box-shadow: 8px 8px 0 var(--c-espresso);
+         padding: 14px 28px 16px; font-weight: 700; }
+
+/* ---------- Button ---------- */
+.btn { display: inline-flex; align-items: center; gap: 18px; align-self: flex-start; background: var(--c-espresso); color: var(--c-oat-light);
+       border-radius: 999px; padding: 18px 40px 18px 30px; font-size: 42px; font-weight: 700; line-height: 1.2;
+       box-shadow: 8px 8px 0 var(--c-oat-light), 8px 8px 0 12px transparent; outline: var(--border) solid var(--c-espresso); }
+.btn .ico { width: 40px; }
+
+/* ---------- Checkbox ---------- */
+.check { display: flex; align-items: flex-start; gap: 22px; }
+.check .box { flex: none; width: 46px; height: 46px; margin-top: .22em; border: var(--border) solid var(--c-espresso); border-radius: 10px; background: var(--c-oat-light); }
+.r-1x1 .check .box { width: 52px; height: 52px; margin-top: .16em; }
+
+/* ---------- Stamp ---------- */
+.stamp { display: grid; place-items: center; border-radius: 50%; border: var(--border) dashed currentColor; font-family: var(--f-serif); }
+
+/* debug: ?guides */
+.guides .frame { outline: 2px dashed magenta; }
+.guides .canvas::before { content: ""; position: absolute; left: 0; right: 0; top: 135px; height: 1080px; outline: 2px dashed cyan; z-index: 99; }
