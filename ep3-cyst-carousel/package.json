@@ -1,0 +1,11 @@
+{
+  "name": "ep3-cyst-carousel",
+  "private": true,
+  "type": "module",
+  "description": "Prepare with Pair · EP.3 Cyst carousel — 7 slides (4:5, 9:16) + Facebook 4 × 1:1, HTML/CSS/SVG → PNG",
+  "scripts": {
+    "carousel": "node scripts/render.mjs",
+    "preview": "node scripts/serve.mjs"
+  },
+  "devDependencies": { "playwright": "1.56.1" }
+}
